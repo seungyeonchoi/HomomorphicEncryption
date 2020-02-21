@@ -19,7 +19,7 @@ public class KGC {
 
     public KGC(int pkSetSize){
         this.pkSetSize = pkSetSize;
-        makePulicKeySet(this.pkSetSize);
+        makePublicKeySet(this.pkSetSize);
     }
 
     public KGC(int pkSetSize, int lamda, int gamma, int p, int a){
@@ -28,10 +28,10 @@ public class KGC {
         this.gamma = gamma;
         this.p = p;
         this.a = a;
-        makePulicKeySet(this.pkSetSize);
+        makePublicKeySet(this.pkSetSize);
     }
 
-    private void makePulicKeySet(int pkSetSize) {
+    private void makePublicKeySet(int pkSetSize) {
     /*
         Xi = p*qi + ri
         qi = 0 ~ (2^lamda)/2 // 0~ any integer
