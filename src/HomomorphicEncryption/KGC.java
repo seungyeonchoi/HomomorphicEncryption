@@ -7,9 +7,9 @@ import java.util.Comparator;
 public class KGC {
 
     public static int pkSetSize = 5;
-    public static int lamda = 9;
+    public static int lamda = 3;
     public static int gamma = 15; //원래 조건 -> (int)(Math.random()*Math.pow(lamda,5));
-    public static int p = 325; //secret key (256 ~ 512)
+    public static int p = 327; //secret key (256 ~ 512)
     public static int a = 13; //
     public static Vector<Integer> pkSet = new Vector<>();
 
@@ -71,9 +71,14 @@ public class KGC {
             pkSet.add(p*qi[i]+ri[i]);
         }
         Collections.sort(pkSet, Comparator.reverseOrder()); //X0 is the largest element
-        if (pkSet.get(0) % a != 0){ //X0 mod p = a 조건 체크
-            int rest = a - pkSet.get(0)%a;
-            pkSet.set(0,pkSet.get(0)+rest);
+        if (pkSet.get(0) % p != a){ //X0 mod p = a 조건 체크
+            int rest = p - (pkSet.get(0)%p - a);
+            int x0 = pkSet.get(0)+rest;
+            while (x0 % a == 0){ //x0 mod a =0 이면, x0 값 증가시킴 //근데 따져보니까 (p/a)*x =(k -1 ) 을 만족하는 x와 k가 있으면, 이 조건이 성립하는데 아마 그런경우가 많이 없을듯해 !
+                x0 += p;
+            }
+            System.out.println(x0);
+            pkSet.set(0,x0);
 
         }
         System.out.println(pkSet);
