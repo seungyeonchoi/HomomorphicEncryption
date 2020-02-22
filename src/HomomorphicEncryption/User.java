@@ -1,6 +1,7 @@
 package HomomorphicEncryption;
 
 import java.util.Vector;
+import java.math.BigInteger;
 
 public class User {
     private int qidRange = 3;
@@ -9,13 +10,13 @@ public class User {
 
     public int qid;
     public int r;
-    public int[] pk;
+    public Vector<BigInteger> pk = new Vector<>();
 
-    public User(Vector<Integer> pkSet){
+    public User(Vector<BigInteger> pkSet){
         this(3,3,2,pkSet);
     }
 
-    public User(int qidRange, int rRange, int pkSize, Vector<Integer> pkSet){
+    public User(int qidRange, int rRange, int pkSize, Vector<BigInteger> pkSet){
         this.qidRange = qidRange;
         this.rRange = rRange;
         this.pkSize = pkSize;
@@ -23,14 +24,14 @@ public class User {
     }
 
     //사용자의 키 생성 (qid, r, pk)
-    void UserKeyGen(Vector<Integer> pkSet){
+    void UserKeyGen(Vector<BigInteger> pkSet){
         qid = (int)(Math.random()*qidRange)+1;
         r = (int)(Math.random()*rRange)+1;
         makeUserKeySet(pkSet);
 
         System.out.println("qid = " + qid + ", r = " + r);
         for(int i=0;i<pkSize;i++){
-            System.out.println("pk"+i+"값 = " + pk[i]);
+            System.out.println("pk"+i+"값 = " + pk.get(i));
         }
     }
 
@@ -40,16 +41,16 @@ public class User {
     }
 
     //사용자마다 랜덥의 public key set 만드는 함수
-    void makeUserKeySet(Vector<Integer> pkSet){
+    void makeUserKeySet(Vector<BigInteger> pkSet){
         System.out.println(pkSet.size());
-        pk = new int[pkSize--];
+//        pk = new int[pkSize--];
         boolean usedpk[] = new boolean[pkSet.size()]; //default = false
 
         while(pkSize >= 0) {
             int pknum = (int)(Math.random()*pkSet.size());
             if (usedpk[pknum]) continue;
             usedpk[pknum] = true;
-            pk[pkSize--] = pkSet.get(pknum);
+            pk.add(pkSet.get(pknum));
         }
     }
 }
