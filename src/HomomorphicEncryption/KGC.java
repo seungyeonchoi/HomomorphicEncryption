@@ -53,8 +53,8 @@ public class KGC {
         Random r = new Random();
 
         Vector<BigInteger> qi = new Vector<>();
-        BigInteger qMax = new BigInteger("2").pow(lamda.pow(5).intValue()).divide(p);
-        System.out.println("qMax = " + qMax.toString());
+        BigInteger qMax = new BigInteger("2").pow(lamda.pow(3).intValue()).divide(p);
+        System.out.println("qMax = " + qMax.toString() + "qMax.bitLength() = " + qMax.bitLength());
 
         for (int i = 0; i < pkSetSize.intValue(); i++) {
             qi.add(new BigInteger(qMax.bitLength()-1,r));// 0~ 2^(lamda)/p

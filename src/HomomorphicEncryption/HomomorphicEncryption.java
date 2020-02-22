@@ -14,8 +14,8 @@ public class HomomorphicEncryption {
         //1) 공개키 쌍 만들기
         kgc = new KGC(new BigInteger("5"));
         //2) user 만들기
-//        User userA = new User(kgc.pkSet);
-//        User userB = new User(kgc.pkSet);
+           User userA = new User(kgc.pkSet);
+           User userB = new User(kgc.pkSet);
 //
 ////      data로 넘겨주는 pk는 생성자내에서 생성하는 것으로 변경
 //        d1 = new Data(userA,2,kgc.a,kgc.pkSet);
