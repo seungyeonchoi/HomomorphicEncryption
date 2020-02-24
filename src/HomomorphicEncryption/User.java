@@ -5,8 +5,8 @@ import java.util.Vector;
 import java.math.BigInteger;
 
 public class User {
-    private int qidRange = 10;
-    private int rRange = 10;
+    private int qidRange = 8;
+    private int rRange = 8;
     private int pkSize = 2;
 
     public BigInteger qid;
@@ -16,7 +16,7 @@ public class User {
     Random rand = new Random();
 
     public User(Vector<BigInteger> pkSet){
-        this(3,3,2,pkSet);
+        this(4,4,2,pkSet);
     }
 
     public User(int qidRange, int rRange, int pkSize, Vector<BigInteger> pkSet){
@@ -30,12 +30,15 @@ public class User {
     void UserKeyGen(Vector<BigInteger> pkSet){
         qid = new BigInteger(qidRange,rand);
         r = new BigInteger(rRange,rand);
+//        qid = BigInteger.ZERO;
+//        r = BigInteger.ZERO;
+
         makeUserKeySet(pkSet);
 
         System.out.println("qid = " + qid + ", r = " + r);
-        for(int i=0;i<pkSize;i++){
-            System.out.println("pk"+i+"값 = " + pk.get(i));
-        }
+//        System.out.println("qid(2) = " + qid.toString(2) + ", r(2) = " + r.toString(2));
+//        System.out.println("qid(2) = " + qid.bitLength() + ", r(2) = " + r.bitLength());
+        System.out.println("pk = " + pk);
     }
 
     //나중에 검색문에서 사용할 r 변경 가능하도록
@@ -44,14 +47,11 @@ public class User {
 
     //사용자마다 랜덥의 public key set 만드는 함수
     void makeUserKeySet(Vector<BigInteger> pkSet){
-        System.out.println(pkSet.size());
-//        pk = new int[pkSize--];
         boolean usedpk[] = new boolean[pkSet.size()]; //default = false
 
         while(pk.size() < pkSize) {
             int pknum = (int)(Math.random()*pkSet.size());
-            System.out.println(pknum);
-            if (usedpk[pknum]) continue;
+            if(pknum==0||usedpk[pknum]) continue;
             usedpk[pknum] = true;
             pk.add(pkSet.get(pknum));
         }

@@ -22,15 +22,21 @@ public class Data {
         for (BigInteger pk : user.pk) {
             sumPk = sumPk.add(pk);
         }
+        System.out.println("w = " + w + ", r = " + user.r + ", qid = " + user.qid);
+
         c1 = w.add(user.r.multiply(user.qid)).add(a.multiply(sumPk)); //w+(user.r*user.qid)+(a*sumPk);
         System.out.println("c1 (w+r*qid+a*sumpk): "+c1);
+        System.out.println(c1.divideAndRemainder(pkSet.get(0))[0] + ", " +c1.divideAndRemainder(pkSet.get(0))[1] +", "+
+        c1.mod(pkSet.get(0)));
         c1 = c1.divideAndRemainder(pkSet.get(0))[1]; //c1 % pkSet.get(0); // mod X0
         System.out.println(pkSet.get(0));
         System.out.println("c1 ( ~ mod x0): "+c1);
+
     }
     void makeC2(){
+        System.out.println("riqid : " +user.r.multiply(user.qid));
         c2 = hash(user.r.multiply(user.qid));
-        System.out.println("c2: "+c2);
+ //       System.out.println("c2: "+c2);
     }
 
     public static BigInteger hash(BigInteger exponent){

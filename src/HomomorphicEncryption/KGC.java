@@ -14,12 +14,15 @@ import java.math.BigInteger;
  * kgc부분 biginteger로 수정 및 계산 가능하게 변경
  */
 public class KGC {
+    Random r = new Random();
 
-    public static BigInteger pkSetSize = new BigInteger("5");
-    public static BigInteger lamda = new BigInteger("3");
-    public static BigInteger gamma = new BigInteger("15"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,5));
-    public static BigInteger p = new BigInteger("327");
-    public static BigInteger a = new BigInteger("13");
+    public static BigInteger lamda = new BigInteger("5"); //한글 한글자로 test할려면 최소 5이성
+    public static BigInteger eta = new BigInteger("20"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,2)), 개인키의 길이
+    public static BigInteger gamma = new BigInteger("25"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,5));
+    public static BigInteger pkSetSize = new BigInteger("30");//감마 + 람다 (but 너무 커서 일단 감마^2+람다로)
+
+    public static BigInteger p;
+    public static BigInteger a;
     //public static int p = 327; //secret key (256 ~ 512)
     //public static int a = 13; //
     public static Vector<BigInteger> pkSet = new Vector<>();
@@ -50,7 +53,14 @@ public class KGC {
          */
         pkSet.clear(); //pkSet 초기화
 
-        Random r = new Random();
+        //p = 2의 19승 + 18자리 랜덤 값의 다음 소수 , 2의 19승 = 524288
+        p = new BigInteger("52428800").add(new BigInteger(eta.intValue()-2,r)).nextProbablePrime();
+        //a = 2의 18승 + 17자리 랜덤 값 , 2의 18승 = 262144
+        a = new BigInteger("100").add(new BigInteger(9,r)).nextProbablePrime();
+
+        System.out.println("p = " + p + ", a = " + a );
+        System.out.println("p(2) = " + p.toString(2) + ", a(2) = " + a.toString(2));
+        System.out.println("p(2) = " + p.bitLength() + ", a(2) = " + a.bitLength());
 
         Vector<BigInteger> qi = new Vector<>();
         BigInteger qMax = new BigInteger("2").pow(lamda.pow(3).intValue()).divide(p);
@@ -64,23 +74,24 @@ public class KGC {
                     continue;
                 }
             }
-            System.out.println("qi: "+qi.get(i));
         }
+        System.out.println("qi = " + qi);
 
         Vector<BigInteger> ri = new Vector<>();
         BigInteger rMax = new BigInteger("2").pow(lamda.intValue()).multiply(BigInteger.valueOf(2));
         System.out.println("rMax = " + rMax.toString());
 
         for (int i = 0; i < pkSetSize.intValue(); i++) {
-            ri.add(new BigInteger("2").pow(lamda.intValue()).multiply(BigInteger.valueOf(-1))
-                    .add(new BigInteger(rMax.bitLength()-1,r)));
+//            ri.add(new BigInteger("2").pow(lamda.intValue()).multiply(BigInteger.valueOf(-1))
+//                    .add(new BigInteger(rMax.bitLength()-1,r)));
+            ri.add(new BigInteger(rMax.bitLength()-2,r));
             for (int j = i-1; j >= 0; j--)  { //중복제거
                 if (ri.get(j) == ri.get(i)) {
                     i--;
                 }
             }
-            System.out.println("ri: "+ri.get(i));
         }
+        System.out.println("ri = " + ri);
 //        int rMax = 2*((int)Math.pow(2,lamda));
 //        for (int i = 0; i < pkSetSize; i++) {
 //            ri[i] = -((int)Math.pow(2,lamda))+ (int)(Math.random()*rMax); // 0~ 2^(lamda)/p
@@ -96,6 +107,8 @@ public class KGC {
         for(int i = 0; i<pkSetSize.intValue(); i++){
             pkSet.add(p.multiply(qi.get(i)).add(ri.get(i)));
         }
+        System.out.println(pkSet);
+
         Collections.sort(pkSet, Comparator.reverseOrder()); //X0 is the largest element
         if (pkSet.get(0).mod(p) != a){ //X0 mod p = a 조건 체크
             BigInteger rest = p.subtract(pkSet.get(0).mod(p).subtract(a));
@@ -107,6 +120,8 @@ public class KGC {
             pkSet.set(0,x0);
 
         }
+        System.out.println("x0 mod p" + pkSet.get(0).mod(p));
+        System.out.println("xo mod a != 0 " + pkSet.get(0).mod(a)+"xo mod p = a : "+ pkSet.get(0).mod(p));
         System.out.println(pkSet);
     }
 }
