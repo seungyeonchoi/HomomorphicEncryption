@@ -1,6 +1,7 @@
 package HomomorphicEncryption;
 
 import java.math.BigInteger;
+import java.util.Vector;
 //정렬: command + alt+ l
 
 public class HomomorphicEncryption {
@@ -10,18 +11,32 @@ public class HomomorphicEncryption {
     public static Data d3;
 
     public static void main(String[] args) {
+        Vector<Boolean> ret = new Vector<>();
         //0) parameter 세팅(현재는 디폴트) -> KGC
         //1) 공개키 쌍 만들기
-        kgc = new KGC(new BigInteger("5"));
+        kgc = new KGC(new BigInteger("50"));
         //2) user 만들기
-           User userA = new User(kgc.pkSet);
-           User userB = new User(kgc.pkSet);
+        for(int i = 0;i<100;i++) {
+            User userA = new User(kgc.pkSet);
+            User userB = new User(kgc.pkSet);
 //
 ////      data로 넘겨주는 pk는 생성자내에서 생성하는 것으로 변경
-        d1 = new Data(userA,BigInteger.valueOf(130),kgc.a, kgc.pkSet);
-        d2 = new Data(userB,BigInteger.valueOf(130),kgc.a, kgc.pkSet);
+            d1 = new Data(userA, new BigInteger(UseBiginteger.StringToHex("염"), 16), kgc.a, kgc.pkSet);
+            d2 = new Data(userB, new BigInteger(UseBiginteger.StringToHex("염"), 16), kgc.a, kgc.pkSet);
 
-        System.out.println(test());
+            ret.add(test());
+        }
+
+        System.out.println(ret);
+
+        if(ret.contains(false))
+            if(!ret.contains(true))
+                System.out.println("결과값에 false만 있음");
+            else
+                System.out.println("결과값에 true와 false 있음");
+        else
+            System.out.println("결과값에 true만 있음");
+
     }
 
     public static Boolean test(){

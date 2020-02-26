@@ -19,7 +19,7 @@ public class KGC {
     public static BigInteger lamda = new BigInteger("5"); //한글 한글자로 test할려면 최소 5이성
     public static BigInteger eta = new BigInteger("20"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,2)), 개인키의 길이
     public static BigInteger gamma = new BigInteger("25"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,5));
-    public static BigInteger pkSetSize = new BigInteger("30");//감마 + 람다 (but 너무 커서 일단 감마^2+람다로)
+    public static BigInteger pkSetSize = new BigInteger("50");//감마 + 람다 (but 너무 커서 일단 감마^2+람다로)
 
     public static BigInteger p;
     public static BigInteger a;
@@ -54,16 +54,16 @@ public class KGC {
         pkSet.clear(); //pkSet 초기화
 
         //p = 2의 19승 + 18자리 랜덤 값의 다음 소수 , 2의 19승 = 524288
-        p = new BigInteger("52428800").add(new BigInteger(eta.intValue()-2,r)).nextProbablePrime();
+        p = new BigInteger("100000000000000000000000000000000000").add(new BigInteger(38,r)).nextProbablePrime();//최대 2^39
         //a = 2의 18승 + 17자리 랜덤 값 , 2의 18승 = 262144
-        a = new BigInteger("100").add(new BigInteger(9,r)).nextProbablePrime();
+        a = new BigInteger("100000000000000000",2).add(new BigInteger(18,r)).nextProbablePrime();//최대 2^19
 
         System.out.println("p = " + p + ", a = " + a );
         System.out.println("p(2) = " + p.toString(2) + ", a(2) = " + a.toString(2));
         System.out.println("p(2) = " + p.bitLength() + ", a(2) = " + a.bitLength());
 
         Vector<BigInteger> qi = new Vector<>();
-        BigInteger qMax = new BigInteger("2").pow(lamda.pow(3).intValue()).divide(p);
+        BigInteger qMax = new BigInteger("2").pow(lamda.pow(4).intValue()).divide(p);
         System.out.println("qMax = " + qMax.toString() + "qMax.bitLength() = " + qMax.bitLength());
 
         for (int i = 0; i < pkSetSize.intValue(); i++) {
@@ -82,9 +82,9 @@ public class KGC {
         System.out.println("rMax = " + rMax.toString());
 
         for (int i = 0; i < pkSetSize.intValue(); i++) {
-//            ri.add(new BigInteger("2").pow(lamda.intValue()).multiply(BigInteger.valueOf(-1))
-//                    .add(new BigInteger(rMax.bitLength()-1,r)));
-            ri.add(new BigInteger(rMax.bitLength()-2,r));
+            ri.add(new BigInteger("2").pow(lamda.intValue()).multiply(BigInteger.valueOf(-1))
+                    .add(new BigInteger(rMax.bitLength()-1,r)));
+//            ri.add(new BigInteger(rMax.bitLength()-2,r));
             for (int j = i-1; j >= 0; j--)  { //중복제거
                 if (ri.get(j) == ri.get(i)) {
                     i--;

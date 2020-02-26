@@ -7,7 +7,7 @@ import java.math.BigInteger;
 public class User {
     private int qidRange = 8;
     private int rRange = 8;
-    private int pkSize = 2;
+    private int pkSize = 3;
 
     public BigInteger qid;
     public BigInteger r;
@@ -16,7 +16,7 @@ public class User {
     Random rand = new Random();
 
     public User(Vector<BigInteger> pkSet){
-        this(4,4,2,pkSet);
+        this(8,8,3,pkSet);
     }
 
     public User(int qidRange, int rRange, int pkSize, Vector<BigInteger> pkSet){
