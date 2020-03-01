@@ -28,7 +28,13 @@ public class Data {
         System.out.println("c1 (w+r*qid+a*sumpk): "+c1);
         System.out.println(c1.divideAndRemainder(pkSet.get(0))[0] + ", " +c1.divideAndRemainder(pkSet.get(0))[1] +", "+
         c1.mod(pkSet.get(0)));
-        c1 = c1.divideAndRemainder(pkSet.get(0))[1]; //c1 % pkSet.get(0); // mod X0
+        //xo으로 나누었을 때  - xo/2 ~ xo/2
+        System.out.println(c1.mod(pkSet.get(0)).bitLength()+ ", " + pkSet.get(0).divide(BigInteger.TWO).bitLength());
+        if(c1.mod(pkSet.get(0)).compareTo(pkSet.get(0).divide(BigInteger.TWO))>0){
+            c1 = c1.divideAndRemainder(pkSet.get(0))[1].subtract(pkSet.get(0));
+        }
+        else
+            c1 = c1.divideAndRemainder(pkSet.get(0))[1]; //c1 % pkSet.get(0); // mod X0
         System.out.println(pkSet.get(0));
         System.out.println("c1 ( ~ mod x0): "+c1);
 
