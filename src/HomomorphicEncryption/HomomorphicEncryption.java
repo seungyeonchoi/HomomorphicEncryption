@@ -34,7 +34,9 @@ public class HomomorphicEncryption {
 
                 //2) user 만들기
                 Random r = new Random();
-                BigInteger rnum = new BigInteger(4, r);
+                BigInteger rnum = new BigInteger(16, r);
+                BigInteger rnum1 = rnum.add(BigInteger.ONE);
+
                 //rnum = BigInteger.ZERO;
                 for (int i = 0; i < 3; i++) {
                     message2 = "";
@@ -63,7 +65,6 @@ public class HomomorphicEncryption {
                     if (result == false) {
                         writer.write(message2);
                         writer.flush();
-
                     }
                     ret.add(result);
                 }
@@ -94,7 +95,8 @@ public class HomomorphicEncryption {
 
 
     public static BigInteger hash(BigInteger exponent){ //data에도 있는데 하나로 하는 방법을 모르겠음!
-        return new BigInteger("2").pow(exponent.intValue()); //(의문)mod ? 를 해야할까
+        //return new BigInteger("2").pow(exponent.intValue()); //(의문)mod ? 를 해야할까
+        return exponent;
     }
 
     public static Boolean test(){
@@ -121,7 +123,8 @@ public class HomomorphicEncryption {
 
         message2 += ("\nH(user1.c1 mod p mod a) = " + parent);
 
-        parent = parent.multiply(d2.c2);
+       // parent = parent.multiply(d2.c2);
+        parent = parent.add(d2.c2);
 
 //        if(!parent.divide(BigInteger.TWO.pow(kgc.a.intValue())).equals(BigInteger.ZERO))
 //            parent = parent.divide(BigInteger.TWO.pow(kgc.a.intValue()));
@@ -147,7 +150,10 @@ public class HomomorphicEncryption {
 
         message2 += ("\nH(user1.c1 mod p mod a) = " + child);
 
-        child = child.multiply(d1.c2);
+       // child = child.multiply(d1.c2);
+
+        child = child.add(d1.c2);
+
 //        if(!child.divide(BigInteger.TWO.pow(kgc.a.intValue())).equals(BigInteger.ZERO))
 //            child = child.divide(BigInteger.TWO.pow(kgc.a.intValue()));
         message2 += ("\n위의 결과 /2^kgc.a = "+child);

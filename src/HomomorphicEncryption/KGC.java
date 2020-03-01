@@ -16,8 +16,8 @@ import java.math.BigInteger;
 public class KGC {
     Random r = new Random();
 
-    public static BigInteger lamda = new BigInteger("7"); //한글 한글자로 test할려면 최소 5이성
-    public static BigInteger eta = new BigInteger("49"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,2)), 개인키의 길이
+    public static BigInteger lamda = new BigInteger("24"); //한글 한글자로 test할려면 최소 5이성
+    public static BigInteger eta = new BigInteger("260"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,2)), 개인키의 길이
     public static BigInteger gamma = new BigInteger("343"); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,5)) -> 현재 lamda^3
     public static BigInteger pkSetSize = new BigInteger("350");//감마 + 람다 (but 너무 커서 일단 감마^3+람다로)
 
@@ -56,9 +56,15 @@ public class KGC {
         pkSet.clear(); //pkSet 초기화
 
         //p = 2의 38승 + 자리 랜덤 값의 다음 소수 , 2의 48( O(lamda^2) = O(eta) ), 19+19+9 (360 = subset 개수)
-        p = new BigInteger("10000000001000000000100000000010000000001000000",2).add(new BigInteger(9,r)).nextProbablePrime();//최대 2^39
+        p = new BigInteger("10",16).add(new BigInteger(9,r)).nextProbablePrime();//최대 2^39
         //a = 2의 18승 + 18자리 랜덤 값 , 2의 19승
-        a = new BigInteger("1000000",2).add(new BigInteger(6,r)).nextProbablePrime();//최대 2^19
+        while (p.bitLength() != eta.intValue()){  //만약 찾은 소수가 lamda^2 의 len 보다 크면 같을 때 까지 다시 뽑기
+            p = new BigInteger(eta.intValue(),r).nextProbablePrime();
+        }
+        a = new BigInteger("10",16).add(new BigInteger(6,r)).nextProbablePrime();//최대 2^19
+        while (a.bitLength() != lamda.intValue()){  //만약 찾은 소수가 lamda^2 의 len 보다 크면 같을 때 까지 다시 뽑기
+            a = new BigInteger(lamda.intValue(),r).nextProbablePrime();
+        }
         //a = BigInteger.TWO;
 
         System.out.println("p = " + p + ", a = " + a );

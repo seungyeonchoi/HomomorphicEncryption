@@ -46,7 +46,8 @@ public class Data {
     }
 
     public static BigInteger hash(BigInteger exponent){
-        return BigInteger.valueOf(2).pow(exponent.intValue());
+        //return BigInteger.valueOf(2).pow(exponent.intValue());
+        return exponent;
         //return (int)Math.pow(2, exponent); //(의문)mod ? 를 해야할까
     }
 

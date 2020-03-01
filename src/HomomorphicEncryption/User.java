@@ -20,7 +20,7 @@ public class User {
     Random rand = new Random();
 
     public User(Vector<BigInteger> pkSet,Vector<Vector<BigInteger>> temp){
-        this(2,2,10,pkSet,temp);
+        this(12,4,10,pkSet,temp);
     }
 
     public User(int qidRange, int rRange, int pkSize, Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
