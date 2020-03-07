@@ -24,7 +24,7 @@ public class Data {
         }
         System.out.println("w = " + w + ", r = " + user.r + ", qid = " + user.qid);
 
-        c1 = w.add(user.r.multiply(user.qid)).add(a.multiply(sumPk)); //w+(user.r*user.qid)+(a*sumPk);
+        c1 = w.add(user.r.multiply(user.qid)).add(user.r.multiply(user.qid).multiply(sumPk)); //w+(user.r*user.qid)+(a*sumPk);
         System.out.println("c1 (w+r*qid+a*sumpk): "+c1);
         System.out.println(c1.divideAndRemainder(pkSet.get(0))[0] + ", " +c1.divideAndRemainder(pkSet.get(0))[1] +", "+
         c1.mod(pkSet.get(0)));

@@ -20,7 +20,7 @@ public class User {
     Random rand = new Random();
 
     public User(Vector<BigInteger> pkSet,Vector<Vector<BigInteger>> temp){
-        this(12,4,10,pkSet,temp);
+        this(2,2,3,pkSet,temp);
     }
 
     public User(int qidRange, int rRange, int pkSize, Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
@@ -33,7 +33,13 @@ public class User {
     //사용자의 키 생성 (qid, r, pk)
     void UserKeyGen(Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
         qid = new BigInteger(qidRange,rand);
+        while (qid.bitLength() == 0){
+            qid = new BigInteger(qidRange,rand);
+        }
         r = new BigInteger(rRange,rand);
+        while (r.bitLength() == 0){
+            r = new BigInteger(rRange,rand);
+        }
 
 //        qid = BigInteger.ZERO;
 //        r = BigInteger.ZERO;

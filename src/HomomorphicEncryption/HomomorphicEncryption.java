@@ -26,7 +26,7 @@ public class HomomorphicEncryption {
             // 기존 파일의 내용에 이어서 쓰려면 true를, 기존 내용을 없애고 새로 쓰려면 false를 지정한다.
             writer = new FileWriter(file, true);
 
-            for(int j = 0 ;j<100;j++) {
+            for(int j = 0 ;j<1;j++) {
                 Vector<Boolean> ret = new Vector<>();
                 //0) parameter 세팅(현재는 디폴트) -> KGC
                 //1) 공개키 쌍 만들기
@@ -34,11 +34,11 @@ public class HomomorphicEncryption {
 
                 //2) user 만들기
                 Random r = new Random();
-                BigInteger rnum = new BigInteger(16, r);
+                BigInteger rnum = new BigInteger(4, r);
                 BigInteger rnum1 = rnum.add(BigInteger.ONE);
 
                 //rnum = BigInteger.ZERO;
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 1; i++) {
                     message2 = "";
 
                     User userA = new User(kgc.pkSet, kgc.temp);
@@ -62,7 +62,7 @@ public class HomomorphicEncryption {
                     message2 += ("\n\nuser2.c1 (c1.mod x0) = " + d2.c1 + "\nuser2.c2 (H(riqid)) = " + d2.c2);
 
                     boolean result = test();
-                    if (result == false) {
+                    if (result == true) {
                         writer.write(message2);
                         writer.flush();
                     }
@@ -117,7 +117,7 @@ public class HomomorphicEncryption {
 
         message2 += ("\n\nuser1" +"\nuser1.c1 mod p = " + parent
                 +"\nuser1.c1 mod p mod a = " + parent.mod(kgc.a));
-        parent = hash(parent.mod(kgc.a));
+        parent = hash(parent);
         //       BigInteger parent = hash((d1.c1.mod(kgc.p).mod(kgc.a)));
 
 
@@ -144,7 +144,7 @@ public class HomomorphicEncryption {
         message2 += ("\n\nuser1" +"\nuser1.c1 mod p = " + child
                 +"\nuser1.c1 mod p mod a = " + child.mod(kgc.a));
 
-        child = hash(child.mod(kgc.a));
+        child = hash(child);
         //       BigInteger parent = hash((d1.c1.mod(kgc.p).mod(kgc.a)));
 
 
