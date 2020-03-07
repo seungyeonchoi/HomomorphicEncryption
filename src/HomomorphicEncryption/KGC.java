@@ -99,12 +99,12 @@ public class KGC {
         BigInteger rMax = new BigInteger("2").pow(lamda.intValue()).multiply(BigInteger.valueOf(2));
         System.out.println("rMax = " + rMax.toString());
 
-        for (int i = 0; i < pkSetSize.intValue(); i++) {
+        for (int i = 0; i < 5; i++) {
             ri.add(new BigInteger(lamda.intValue()-1,r).multiply(new BigInteger("-1").pow(new BigInteger(1,r).intValue())));
         }
         System.out.println("ri = " + ri);
 
-        for(int i = 0; i<pkSetSize.intValue(); i++){
+        for(int i = 0; i<5; i++){
             pkSet.add(p.multiply(qi.get(i)).add(ri.get(i)));
           //  System.out.println(p.multiply(qi.get(i)).add(ri.get(i)).bitLength());
             Vector<BigInteger> temp2 = new Vector<>();
