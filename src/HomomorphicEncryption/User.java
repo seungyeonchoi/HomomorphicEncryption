@@ -41,16 +41,14 @@ public class User {
             r = new BigInteger(rRange,rand);
         }
 
-//        qid = BigInteger.ZERO;
-//        r = BigInteger.ZERO;
-
         makeUserKeySet(pkSet,temp);
 
 
         System.out.println("qid = " + qid + ", r = " + r);
-//        System.out.println("qid(2) = " + qid.toString(2) + ", r(2) = " + r.toString(2));
-//        System.out.println("qid(2) = " + qid.bitLength() + ", r(2) = " + r.bitLength());
-        System.out.println("pk = " + pk);
+        System.out.println("pk = ");
+        for(int i = 0; i<pk.size();i++){
+            System.out.println(pk.get(i).toString(16));
+        }
     }
 
     //나중에 검색문에서 사용할 r 변경 가능하도록

@@ -16,9 +16,8 @@ import java.math.BigInteger;
 public class KGC {
     Random r = new Random();
 
-    public static BigInteger lamda = new BigInteger("4"); //한글 한글자로 test할려면 최소 5이성
-   // public static BigInteger eta = lamda.multiply(new BigInteger("10")); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,2)), 개인키의 길이
-    public static BigInteger eta = new BigInteger("16");  //원래 조건 -> (int)(Math.random()*Math.pow(lamda,2)), 개인키의 길이
+    public static BigInteger lamda = new BigInteger("3"); //한글 한글자로 test할려면 최소 5이성
+    public static BigInteger eta = lamda.pow(2);  //원래 조건 -> (int)(Math.random()*Math.pow(lamda,2)), 개인키의 길이
     public static BigInteger gamma = lamda.pow(5); //원래 조건 -> (int)(Math.random()*Math.pow(lamda,5)) -> 현재 lamda^3
     public static BigInteger pkSetSize = lamda.add(gamma);//감마 + 람다 (but 너무 커서 일단 감마^3+람다로)
 
@@ -73,7 +72,7 @@ public class KGC {
         }
         //a = BigInteger.TWO;
 
-        System.out.println("p = " + p + ", a = " + a );
+        System.out.println("p = " + p + p.toString(16) + ", a = " + a );
         System.out.println("p(2) = " + p.toString(2) + ", a(2) = " + a.toString(2));
         System.out.println("p(2) = " + p.bitLength() + ", a(2) = " + a.bitLength());
 
@@ -112,11 +111,10 @@ public class KGC {
             temp2.add(ri.get(i));
             temp.add(temp2);
         }
-      //  System.out.println(pkSet);
 
         Collections.sort(pkSet, Comparator.reverseOrder()); //X0 is the largest element
         Collections.sort(temp,Comparator.comparing(Vector::firstElement)); //X0 is the largest element
-      //  System.out.println(pkSet);
+
     //    System.out.println(temp);
 
         BigInteger x0 = pkSet.get(0);
@@ -127,6 +125,11 @@ public class KGC {
             }
         }
         pkSet.set(0,x0);
+        System.out.println("pkset");
+        for(int i = 0; i<pkSet.size();i++){
+            System.out.println(pkSet.get(i).toString(16));
+        }
+
         System.out.println("x0 mod 2 = " + pkSet.get(0).mod(BigInteger.TWO));
         System.out.println("xo mod 2 != 0 -> " + pkSet.get(0).mod(BigInteger.TWO)+", xo mod p = odd : "+ pkSet.get(0).mod(p));
     }

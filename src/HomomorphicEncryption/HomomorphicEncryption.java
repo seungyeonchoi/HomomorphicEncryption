@@ -10,9 +10,6 @@ import java.util.Vector;
 
 public class HomomorphicEncryption {
     public static KGC kgc;
-    public static Data d1;
-    public static Data d2;
-    public static Data d3;
 
 
     public static String message2 = "";
@@ -33,20 +30,19 @@ public class HomomorphicEncryption {
                 kgc = new KGC();
 
                 //2) user 만들기
-                Random r = new Random();
-                BigInteger rnum = new BigInteger(3, r);
+                BigInteger rnum = new BigInteger("10");
                 BigInteger rnum1 = rnum.add(BigInteger.ONE);
+                User userA = new User(kgc.pkSet, kgc.temp);
+                User userB = new User(kgc.pkSet, kgc.temp);
 
-                //rnum = BigInteger.ZERO;
+                Data d1 = new Data(userA, rnum, kgc.a, kgc.pkSet);
+                Data d2 = new Data(userB, rnum, kgc.a, kgc.pkSet);
+                d2 = new Data(userA, rnum, kgc.a, kgc.pkSet);
                 for (int i = 0; i < 1; i++) {
                     message2 = "";
 
-                    User userA = new User(kgc.pkSet, kgc.temp);
-                    User userB = new User(kgc.pkSet, kgc.temp);
-//
 ////      data로 넘겨주는 pk는 생성자내에서 생성하는 것으로 변경
-                    d1 = new Data(userA, rnum, kgc.a, kgc.pkSet);
-                    d2 = new Data(userB, rnum, kgc.a, kgc.pkSet);
+
 
                     message2 += ("\n\n-------------------------------------------------------"
                             + "\nkgc.a = " + kgc.a + ", kgc.p = " + kgc.p + "\nx0 = " + kgc.pkSet.get(0) + "\n");
@@ -61,7 +57,7 @@ public class HomomorphicEncryption {
 
                     message2 += ("\n\nuser2.c1 (c1.mod x0) = " + d2.c1 + "\nuser2.c2 (H(riqid)) = " + d2.c2);
 
-                    boolean result = test();
+                    boolean result = test(d1,d2);
                     if (result == true) {
                         writer.write(message2);
                         writer.flush();
@@ -81,6 +77,7 @@ public class HomomorphicEncryption {
                         System.out.println("결과값에 true와 false 있음");
                 else
                     System.out.println("결과값에 true만 있음");
+
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -99,11 +96,7 @@ public class HomomorphicEncryption {
         return exponent;
     }
 
-    public static Boolean test(){
-
-        System.out.println("d1: c1 mod 2 = " + d1.c1.mod(BigInteger.TWO));
-        System.out.println("d2: c1 mod 2 = " + d2.c1.mod(BigInteger.TWO));
-
+    public static Boolean test(Data d1, Data d2){
         BigInteger parent;
         if(d1.c1.mod(kgc.p).compareTo(kgc.p.divide(BigInteger.TWO))>0) {
             parent = d1.c1.mod(kgc.p).subtract(kgc.p);
@@ -111,8 +104,8 @@ public class HomomorphicEncryption {
         else {
             parent = d1.c1.mod(kgc.p);
         }
-        System.out.println("c1 mod p = " + parent);
-        System.out.println("parent의 c1 mod p mod 2 = " + parent.mod(BigInteger.TWO));
+        System.out.println("parent: c1 mod p = " + parent.toString(16));
+
 
         message2 += ("\n\nuser1" +"\nuser1.c1 mod p = " + parent
                 +"\nuser1.c1 mod p mod 2 = " + parent.mod(BigInteger.TWO));
@@ -137,7 +130,7 @@ public class HomomorphicEncryption {
         else {
             child = d2.c1.mod(kgc.p);
         }
-        System.out.println("c1 mod p = " + child);
+        System.out.println("chlid의 c1 mod p = " + child.toString(16));
         System.out.println("chlid의 c1 mod p mod 2 = " + child.mod(BigInteger.TWO));
 
         message2 += ("\n\nuser1" +"\nuser1.c1 mod p = " + child
@@ -165,8 +158,8 @@ public class HomomorphicEncryption {
 //            return true;
 //        else return false;
 
-        System.out.println(parent);
-        System.out.println(child);
+        System.out.println(parent.toString(16));
+        System.out.println(child.toString(16));
 
         return parent.subtract(child) == BigInteger.valueOf(0) ? true : false;
     }

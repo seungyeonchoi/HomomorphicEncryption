@@ -26,22 +26,22 @@ public class Data {
 
         c1 = w.add(user.r.multiply(user.qid)).add(user.r.multiply(user.qid).multiply(sumPk)); //w+(user.r*user.qid)+(a*sumPk);
         System.out.println("c1 (w+r*qid+ri*qid*sumpk): "+c1);
-        System.out.println(c1.divideAndRemainder(pkSet.get(0))[0] + ", " +c1.divideAndRemainder(pkSet.get(0))[1] +", "+
-        c1.mod(pkSet.get(0)));
+        System.out.println(c1.divideAndRemainder(pkSet.get(0))[0] + ", " +c1.divideAndRemainder(pkSet.get(0))[1]);
         //xo으로 나누었을 때  - xo/2 ~ xo/2
-        System.out.println(c1.mod(pkSet.get(0)).bitLength()+ ", " + pkSet.get(0).divide(BigInteger.TWO).bitLength());
-        if(c1.mod(pkSet.get(0)).compareTo(pkSet.get(0).divide(BigInteger.TWO))>0){
-            c1 = c1.divideAndRemainder(pkSet.get(0))[1].subtract(pkSet.get(0));
+        c1 = c1.mod(pkSet.get(0));
+        if(c1.compareTo(pkSet.get(0).divide(BigInteger.TWO))>0){
+            System.out.println("mod /2보다 커서 -sub 실행");
+            System.out.println(c1+ "- " +pkSet.get(0));
+          c1=c1.subtract(pkSet.get(0));
         }
-        else
-            c1 = c1.divideAndRemainder(pkSet.get(0))[1]; //c1 % pkSet.get(0); // mod X0
-        System.out.println(pkSet.get(0));
-        System.out.println("c1 ( ~ mod x0): "+c1);
+
+        System.out.println("c1 ( ~ mod x0): "+c1.toString(16));
 
     }
     void makeC2(){
         System.out.println("riqid : " +user.r.multiply(user.qid));
         c2 = hash(user.r.multiply(user.qid));
+        System.out.println("c2: "+c2);
     }
 
     public static BigInteger hash(BigInteger exponent){
