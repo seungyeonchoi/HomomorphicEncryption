@@ -11,59 +11,53 @@ public class User {
 
     public BigInteger qid;
     public BigInteger r;
-    public Vector<BigInteger> pk = new Vector<>();
-
-    public Vector<BigInteger> rArray = new Vector<>();
-
-    public Vector<BigInteger> pkArray = new Vector<>();
+    public Vector<PublicKey> pk = new Vector<>();
+    private BigInteger au;
 
     Random rand = new Random();
 
-    public User(Vector<BigInteger> pkSet,Vector<Vector<BigInteger>> temp){
-        this(12,4,10,pkSet,temp);
+    public User(Vector<PublicKey> pkSet){
+        this(100,60,3,pkSet);
     }
 
-    public User(int qidRange, int rRange, int pkSize, Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
+    public User(int qidRange, int rRange, int pkSize, Vector<PublicKey> pkSet){
         this.qidRange = qidRange;
         this.rRange = rRange;
         this.pkSize = pkSize;
-        UserKeyGen(pkSet,temp);
+        UserKeyGen(pkSet);
     }
 
     //사용자의 키 생성 (qid, r, pk)
-    void UserKeyGen(Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
+    void UserKeyGen(Vector<PublicKey> pkSet){
         qid = new BigInteger(qidRange,rand);
         r = new BigInteger(rRange,rand);
 
-//        qid = BigInteger.ZERO;
-//        r = BigInteger.ZERO;
-
-        makeUserKeySet(pkSet,temp);
-
-
-        System.out.println("qid = " + qid + ", r = " + r);
-//        System.out.println("qid(2) = " + qid.toString(2) + ", r(2) = " + r.toString(2));
-//        System.out.println("qid(2) = " + qid.bitLength() + ", r(2) = " + r.bitLength());
-        System.out.println("pk = " + pk);
+        makeUserKeySet(pkSet);
     }
 
     //나중에 검색문에서 사용할 r 변경 가능하도록
     void ChangeUserR(){
-        r = new BigInteger(rRange,rand);    }
+        r = new BigInteger(rRange,rand);
+    }
 
     //사용자마다 랜덥의 public key set 만드는 함수
-    void makeUserKeySet(Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
+    void makeUserKeySet(Vector<PublicKey> pkSet){
         boolean usedpk[] = new boolean[pkSet.size()]; //default = false
 
         while(pk.size() < pkSize) {
             int pknum = (int)(Math.random()*pkSet.size());
             if(pknum==0||usedpk[pknum]) continue;
             usedpk[pknum] = true;
-            rArray.add(temp.get(pknum).get(1));
-            pkArray.add(temp.get(pknum).get(0).multiply(new BigInteger("-1")));
-            System.out.print(pknum + ", ");
             pk.add(pkSet.get(pknum));
         }
-        System.out.println();
+        System.out.println("user-selected pkSet's index : " + usedpk);
     }
+    public void setAu(BigInteger au){
+        this.au = au;
+    }
+
+    public BigInteger getAu(){
+        return au;
+    }
+
 }
