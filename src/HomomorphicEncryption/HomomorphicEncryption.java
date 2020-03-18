@@ -44,7 +44,7 @@ public class HomomorphicEncryption {
                     User userA = new User(kgc.pkSet, kgc.temp);
                     User userB = new User(kgc.pkSet, kgc.temp);
 //
-////      data로 넘겨주는 pk는 생성자내에서 생성하는 것으로 변경
+//     data로 넘겨주는 pk는 생성자내에서 생성하는 것으로 변경
                     d1 = new Data(userA, rnum, kgc.a, kgc.pkSet);
                     d2 = new Data(userB, rnum, kgc.a, kgc.pkSet);
 
@@ -157,8 +157,8 @@ public class HomomorphicEncryption {
 
 
     public static Boolean test(BigInteger Ci1, BigInteger Ci2, BigInteger Cj1, BigInteger Cj2){
-
         BigInteger parent;
+        BigInteger child;
 
         if(Ci1.mod(kgc.p).compareTo(kgc.p.divide(BigInteger.TWO))>0) {
             parent = Ci1.mod(kgc.p).subtract(kgc.p);
@@ -173,7 +173,6 @@ public class HomomorphicEncryption {
 
         parent = parent.add(Cj2);
 
-        BigInteger child;
         if(Cj1.mod(kgc.p).compareTo(kgc.p.divide(BigInteger.TWO))>0) {
             child = Cj1.mod(kgc.p).subtract(kgc.p);
         }

@@ -25,8 +25,9 @@ public class KGC {
     public static BigInteger a;
 
     public static Vector<BigInteger> pkSet = new Vector<>();
-
     public static Vector<Vector<BigInteger>> temp = new Vector<>();
+
+    private BigInteger au;
 
     public KGC(){
         this(pkSetSize);
@@ -117,4 +118,27 @@ public class KGC {
             else System.out.println(i + "(hexadecimal) : " + pkSet.get(i).toString(16));
         }
     }
+
+    //au 값 설정 후 return
+    public BigInteger shareAlpha(){
+        //함수 사용 방법 -> user와 kgc에 au변수 추가 -> makeC1(a 대신 au)
+        //KGC로 함수 옮기는 게 좋을 듯?
+        //알파 값 설정
+        au = BigInteger.ONE;
+        for(int i=0;i<lamda.intValue();i++){
+            au = au.multiply(BigInteger.TWO);
+        }
+        au = au.add(new BigInteger(lamda.intValue()-1,r)).nextProbablePrime();//최대 2^19
+        return au;
+    }
+
+    //주어진 au값으로 설정
+    public void setAu(BigInteger au){
+        this.au = au;
+    }
+
+    public BigInteger getAu(){
+        return au;
+    }
+
 }

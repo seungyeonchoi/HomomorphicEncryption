@@ -11,11 +11,12 @@ public class User {
 
     public BigInteger qid;
     public BigInteger r;
+
     public Vector<BigInteger> pk = new Vector<>();
-
     public Vector<BigInteger> rArray = new Vector<>();
-
     public Vector<BigInteger> pkArray = new Vector<>();
+
+    private BigInteger au;
 
     Random rand = new Random();
 
@@ -61,4 +62,13 @@ public class User {
         }
         System.out.println("user-selected pkSet's index : " + memory);
     }
+
+    public void setAu(BigInteger au){
+        this.au = au;
+    }
+
+    public BigInteger getAu(){
+        return au;
+    }
+
 }
