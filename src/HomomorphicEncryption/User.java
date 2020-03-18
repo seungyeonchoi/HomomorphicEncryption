@@ -12,12 +12,13 @@ public class User {
     public BigInteger qid;
     public BigInteger r;
     public Vector<PublicKey> pk = new Vector<>();
+
     private BigInteger au;
 
     Random rand = new Random();
 
     public User(Vector<PublicKey> pkSet){
-        this(100,60,3,pkSet);
+        this(100,60,4,pkSet);
     }
 
     public User(int qidRange, int rRange, int pkSize, Vector<PublicKey> pkSet){
@@ -31,7 +32,6 @@ public class User {
     void UserKeyGen(Vector<PublicKey> pkSet){
         qid = new BigInteger(qidRange,rand);
         r = new BigInteger(rRange,rand);
-
         makeUserKeySet(pkSet);
     }
 
@@ -42,15 +42,20 @@ public class User {
 
     //사용자마다 랜덥의 public key set 만드는 함수
     void makeUserKeySet(Vector<PublicKey> pkSet){
+        this.pk.add(pkSet.firstElement());
         boolean usedpk[] = new boolean[pkSet.size()]; //default = false
-
-        while(pk.size() < pkSize) {
+        usedpk[0] = true; //x0 넣기
+        while(this.pk.size() < pkSize) {
             int pknum = (int)(Math.random()*pkSet.size());
-            if(pknum==0||usedpk[pknum]) continue;
+            if(usedpk[pknum]) continue;
             usedpk[pknum] = true;
-            pk.add(pkSet.get(pknum));
+            this.pk.add(pkSet.get(pknum));
         }
         System.out.println("user-selected pkSet's index : " + usedpk);
+        for(int i = 0; i<this.pk.size(); i++) {
+            if (i == 0) System.out.println("x0(hexadecimal) : " + this.pk.get(i).pk.toString(16) );
+            else System.out.println(i + "(hexadecimal) : " + this.pk.get(i).pk.toString(16) );
+        }
     }
     public void setAu(BigInteger au){
         this.au = au;
