@@ -61,7 +61,7 @@ public class HomomorphicEncryption {
 //
 //                    message2 += ("\n\nuser2.c1 (c1.mod x0) = " + d2.c1 + "\nuser2.c2 (H(riqid)) = " + d2.c2);
 
-                    boolean result = test();
+                    boolean result = test(d1.c1, d1.c2, d2.c1, d2.c2);
                     if (result == false) {
                         writer.write(message2);
                         writer.flush();
@@ -145,6 +145,50 @@ public class HomomorphicEncryption {
 
        // child = child.multiply(d1.c2);
         child = child.add(d1.c2);
+
+//        message2 += ("\n위의 결과 /2^kgc.a = "+child);
+
+        System.out.println();
+        System.out.println("H(Ci1 mod p mod a)*Cj2(2^hexadecimal) : 2^" +  parent);
+        System.out.println("H(Cj1 mod p mod a)*Ci2(2^hexadecimal) : 2^" + child);
+
+        return parent.subtract(child) == BigInteger.valueOf(0) ? true : false;
+    }
+
+
+    public static Boolean test(BigInteger Ci1, BigInteger Ci2, BigInteger Cj1, BigInteger Cj2){
+
+        BigInteger parent;
+
+        if(Ci1.mod(kgc.p).compareTo(kgc.p.divide(BigInteger.TWO))>0) {
+            parent = Ci1.mod(kgc.p).subtract(kgc.p);
+        }
+        else {
+            parent = Ci1.mod(kgc.p);
+        }
+
+        parent = hash(parent.mod(kgc.a));
+
+        System.out.println("H(Ci1 mod p mod a)(2^hexadecimal) : 2^" + parent.toString(16));
+
+        parent = parent.add(Cj2);
+
+        BigInteger child;
+        if(Cj1.mod(kgc.p).compareTo(kgc.p.divide(BigInteger.TWO))>0) {
+            child = Cj1.mod(kgc.p).subtract(kgc.p);
+        }
+        else {
+            child = Cj1.mod(kgc.p);
+        }
+
+        child = hash(child.mod(kgc.a));
+
+        System.out.println("H(Cj1 mod p mod a)(2^hexadecimal) : 2^" + child.toString(16));
+
+//        message2 += ("\nH(user1.c1 mod p mod a) = " + child);
+
+        // child = child.multiply(d1.c2);
+        child = child.add(Ci2);
 
 //        message2 += ("\n위의 결과 /2^kgc.a = "+child);
 
