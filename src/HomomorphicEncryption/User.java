@@ -20,7 +20,7 @@ public class User {
     Random rand = new Random();
 
     public User(Vector<BigInteger> pkSet,Vector<Vector<BigInteger>> temp){
-        this(12,4,10,pkSet,temp);
+        this(100,60,3,pkSet,temp);
     }
 
     public User(int qidRange, int rRange, int pkSize, Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
@@ -35,25 +35,20 @@ public class User {
         qid = new BigInteger(qidRange,rand);
         r = new BigInteger(rRange,rand);
 
-//        qid = BigInteger.ZERO;
-//        r = BigInteger.ZERO;
-
         makeUserKeySet(pkSet,temp);
-
-
-        System.out.println("qid = " + qid + ", r = " + r);
-//        System.out.println("qid(2) = " + qid.toString(2) + ", r(2) = " + r.toString(2));
-//        System.out.println("qid(2) = " + qid.bitLength() + ", r(2) = " + r.bitLength());
-        System.out.println("pk = " + pk);
     }
 
     //나중에 검색문에서 사용할 r 변경 가능하도록
-    void ChangeUserR(){
-        r = new BigInteger(rRange,rand);    }
+    public void ChangeUserR(){
+        r = new BigInteger(rRange,rand);
+    }
 
-    //사용자마다 랜덥의 public key set 만드는 함수
-    void makeUserKeySet(Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
+    //사용자마다 랜덤의 public key set 만드는 함수
+    public void makeUserKeySet(Vector<BigInteger> pkSet, Vector<Vector<BigInteger>> temp){
         boolean usedpk[] = new boolean[pkSet.size()]; //default = false
+
+        Vector<Integer> memory = new Vector<>();
+        pk.clear();
 
         while(pk.size() < pkSize) {
             int pknum = (int)(Math.random()*pkSet.size());
@@ -61,9 +56,9 @@ public class User {
             usedpk[pknum] = true;
             rArray.add(temp.get(pknum).get(1));
             pkArray.add(temp.get(pknum).get(0).multiply(new BigInteger("-1")));
-            System.out.print(pknum + ", ");
+            memory.add(pknum);
             pk.add(pkSet.get(pknum));
         }
-        System.out.println();
+        System.out.println("user-selected pkSet's index : " + memory);
     }
 }
