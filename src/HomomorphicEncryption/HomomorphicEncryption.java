@@ -12,6 +12,7 @@ import java.util.Vector;
 //정렬: command + alt+ l
 
 public class HomomorphicEncryption {
+
     public static KGC kgc;
     public static Server server;
     public static Data d1;
