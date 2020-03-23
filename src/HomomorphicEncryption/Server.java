@@ -8,10 +8,11 @@ public class Server {
 
     private BigInteger p; //서버의 개인키
     private BigInteger a; //서버alpha
-
+    private Database db;
     public Server(BigInteger p, BigInteger a){
         this.p = p;
         this.a = a;
+        this.db = new Database();
     }
     public Vector<Data> readDB(){
         Vector<Data> arrData = new Vector<Data>();
@@ -34,6 +35,7 @@ public class Server {
         return arrData;
     }
     public void writeDB(Data data){
+
         try{
             FileWriter fw = new FileWriter("database.txt", true); //true : 이어쓰기
             BufferedWriter bw = new BufferedWriter(fw);
@@ -55,7 +57,10 @@ public class Server {
         }
     }
     public void uploadFile(Data data){
+        //db.insertUser(new User(),3);
+
         remakeData(data);
+        db.insertContract(data);
         Vector<Data> arrData = readDB();
         System.out.println(arrData.size());
         for (Data element: arrData) {

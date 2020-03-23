@@ -16,7 +16,9 @@ public class User {
     private BigInteger au;
 
     Random rand = new Random();
+    public User(){
 
+    }
     public User(Vector<PublicKey> pkSet){
         this(100,60,4,pkSet);
     }

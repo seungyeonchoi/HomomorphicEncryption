@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+
 import java.util.Random;
 import java.util.Vector;
 
@@ -23,52 +20,10 @@ public class HomomorphicEncryption {
     public static Data d2;
     public static BigInteger rnum = new BigInteger(SHA1("최승연"), 16);
     public static BigInteger rnum1 = rnum.add(BigInteger.ONE);
+    public static String message2 = "";
 
-    public static String user_name = "sangseung";
-    public static String password = "konkuk17sw";
-
-    public static String message2 = "fianlproject";
     public static void main(String[] args) {
-//        Connection con = null;
-//        PreparedStatement pstmt = null;
-//        String server = "seouldb.cwnpn1rxhuaq.ap-northeast-2.rds.amazonaws.com:3306"; // MySQL 서버 주소
-//        String database = ""; // MySQL DATABASE 이름
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//        } catch (ClassNotFoundException e) {
-//            System.out.println("jdbc 오류");
-//            e.printStackTrace();
-//        }
-//        try {
-//            con = DriverManager.getConnection("jdbc:mysql://" + server + "/" + database + "?useSSL=false", user_name, password);
-//            System.out.println("정상적으로 연결되었습니다.");
-//            String sql = "INSERT INTO mydb.contract VALUES (?)";
-//
-//            pstmt = con.prepareStatement(sql);
-//
-//            // 데이터 ing
-//            pstmt.setInt(1, 5);
-//
-//            // 5. 쿼리 실행 및 결과 처리
-//            // SELECT와 달리 INSERT는 반환되는 데이터들이 없으므로
-//            // ResultSet 객체가 필요 없고, 바로 pstmt.executeUpdate()메서드를 호출하면 됩니다.
-//            // INSERT, UPDATE, DELETE 쿼리는 이와 같이 메서드를 호출하며
-//            // SELECT에서는 stmt.executeQuery(sql); 메서드를 사용했었습니다.
-//            // @return int - 몇 개의 row가 영향을 미쳤는지를 반환
-//            int count = pstmt.executeUpdate();
-//            if (count == 0) {
-//                System.out.println("데이터 입력 실패");
-//            } else {
-//                System.out.println("데이터 입력 성공");
-//            }
-//        } catch(SQLException e) {
-//            System.err.println("con 오류:" + e.getMessage());
-//            e.printStackTrace();
-//        }
-//        try {
-//            if(con != null)
-//                con.close();
-//        } catch (SQLException e) {}
+
         kgc = new KGC();
         server = new Server(kgc.getP(),kgc.getA());
         User userA = new User(kgc.pkSet);
