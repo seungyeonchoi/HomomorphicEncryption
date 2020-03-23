@@ -45,7 +45,6 @@ public class Database {
     }
     void insertKeywordPEKS(Data data){
         try{
-
             String sql = "INSERT INTO "+mainDB+".KeywordPEKS(ci1,ci2) VALUES (?,?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, data.c1.toString(16 ));
@@ -59,7 +58,6 @@ public class Database {
 
     void insertUser(User user, int id){
         try{
-            PreparedStatement pstmt = null;
             String sql = "INSERT INTO "+mainDB+".userTable(userId) VALUES (?)";
             System.out.println("sql: "+ sql);
             pstmt = conn.prepareStatement(sql);
@@ -69,49 +67,52 @@ public class Database {
             e.printStackTrace();
         }
     }
-    void insert(String sql){
-        try{
-            PreparedStatement pstmt = null;
-           // String sql = "INSERT INTO mydb.contract VALUES (?)";
-            pstmt = conn.prepareStatement(sql);
-            // 데이터 ing
-            pstmt.setInt(1, 5);
 
-            // 5. 쿼리 실행 및 결과 처리
-            // SELECT와 달리 INSERT는 반환되는 데이터들이 없으므로
-            // ResultSet 객체가 필요 없고, 바로 pstmt.executeUpdate()메서드를 호출하면 됩니다.
-            // INSERT, UPDATE, DELETE 쿼리는 이와 같이 메서드를 호출하며
-            // SELECT에서는 stmt.executeQuery(sql); 메서드를 사용했었습니다.
-            // @return int - 몇 개의 row가 영향을 미쳤는지를 반환
-            int count = pstmt.executeUpdate();
-            if (count == 0) {
-                System.out.println("fail to insert: "+ sql);
-            } else {
-                System.out.println("success to insert: "+ sql);
+    void selectKeywordPEKS(){
+        try{
+            String sql = "SELECT ci1,ci2 from "+mainDB+".KeywordPEKS";
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                String ci1 = rs.getString(1);
+                String ci2 = rs.getString(2);
             }
-        }catch (SQLException e) {
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
-    void insertKeywordPEKS(){
 
-    }
-    void select(String sql) {
+    void selectZindex(int id){
         try{
-
-            stmt = conn.createStatement();
-            //String sql = "SELECT ip from ipList";
-            // 5. 쿼리 수행
-            // 레코드들은 ResultSet 객체에 추가된다.
+            String sql = "SELECT zString from "+mainDB+".Zindex where keywordId = "+id;
             rs = stmt.executeQuery(sql);
-            // 6. 실행결과 출력하기
-            while (rs.next()) {
-                // 레코드의 칼럼은 배열과 달리 0부터 시작하지 않고 1부터 시작한다.
-                // 데이터베이스에서 가져오는 데이터의 타입에 맞게 getString 또는 getInt 등을 호출한다.
-                String res = rs.getString(1);
-                System.out.println(res);
+            String res = rs.getString(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    void selectContract(boolean[] zString){
+        try{
+            String sql = "SELECT ci2,ci3 "+mainDB+".Contract where contractId=?";
+            pstmt = conn.prepareStatement(sql);
+            for(int i = 0; i<zString.length; i++){
+                if (zString[i]){
+                    pstmt.setInt(1, i+1);
+                    rs = pstmt.executeQuery();
+                    String ci2 = rs.getString(1);
+                    String ci3 = rs.getString(2);
+                }
             }
         }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    void updateZindex(int id, String zString){
+        try{
+            String sql = "UPDATE "+mainDB+".Zindex set zString=? where keywordId="+id;
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, zString);
+            isSuccess(pstmt.executeUpdate());
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -119,6 +120,7 @@ public class Database {
         System.out.println("db connect");
         try {
             conn = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database + "?useSSL=false", user_name, password);
+            stmt = conn.createStatement();
             System.out.println("정상적으로 연결되었습니다.");
         } catch(SQLException e) {
             System.err.println("conn 오류:" + e.getMessage());

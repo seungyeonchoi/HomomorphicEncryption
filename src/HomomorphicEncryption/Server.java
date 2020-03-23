@@ -63,6 +63,7 @@ public class Server {
         //db테스트
 //        db.insertContract(data);
 //        db.insertZindex(1, "1010101");
+        db.updateZindex(1,"바꿈내가");
         Vector<Data> arrData = readDB();
         System.out.println(arrData.size());
         for (Data element: arrData) {
