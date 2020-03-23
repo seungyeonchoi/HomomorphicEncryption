@@ -1,5 +1,7 @@
 package HomomorphicEncryption;
+import java.math.BigInteger;
 import java.sql.*;
+import java.util.Vector;
 
 public class Database {
     private String user_name = "sangseung";
@@ -23,7 +25,7 @@ public class Database {
     }
     void insertZindex(int id, String zString){
         try{
-            String sql = "INSERT INTO "+mainDB+".Zindex(contractId,zString) VALUES (?,?)";
+            String sql = "INSERT INTO "+mainDB+".Zindex(keywordId,zString) VALUES (?,?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
             pstmt.setString(2, zString);
@@ -34,10 +36,10 @@ public class Database {
     }
     void insertContract(Data data){
         try{
-            String sql = "INSERT INTO "+mainDB+".Contract(ci2,ci3) VALUES (?,?)";
+            String sql = "INSERT INTO "+mainDB+".Contract(c2,c3) VALUES (?,?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, data.c2.toString(16 ));
-            pstmt.setString(2, data.c3.toString(16 ));
+            pstmt.setString(1, data.c2.toString(16));
+            pstmt.setString(2, data.c3.toString(16));
             isSuccess(pstmt.executeUpdate());
         }catch (SQLException e) {
             e.printStackTrace();
@@ -45,10 +47,10 @@ public class Database {
     }
     void insertKeywordPEKS(Data data){
         try{
-            String sql = "INSERT INTO "+mainDB+".KeywordPEKS(ci1,ci2) VALUES (?,?)";
+            String sql = "INSERT INTO "+mainDB+".KeywordPEKS(c1,c2) VALUES (?,?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, data.c1.toString(16 ));
-            pstmt.setString(2, data.c2.toString(16 ));
+            pstmt.setString(1, data.c1.toString(16));
+            pstmt.setString(2, data.c2.toString(16));
             isSuccess(pstmt.executeUpdate());
         }catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +61,6 @@ public class Database {
     void insertUser(User user, int id){
         try{
             String sql = "INSERT INTO "+mainDB+".userTable(userId) VALUES (?)";
-            System.out.println("sql: "+ sql);
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
             isSuccess(pstmt.executeUpdate());
@@ -68,43 +69,59 @@ public class Database {
         }
     }
 
-    void selectKeywordPEKS(){
+    Vector<KeywordPEKS> selectKeywordPEKS(){
+        Vector<KeywordPEKS> arr = new Vector<KeywordPEKS>();
         try{
-            String sql = "SELECT ci1,ci2 from "+mainDB+".KeywordPEKS";
+            String sql = "SELECT * from "+mainDB+".KeywordPEKS";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                String ci1 = rs.getString(1);
-                String ci2 = rs.getString(2);
+                int idx = rs.getInt(1);
+                String c1 = rs.getString(2);
+                String c2 = rs.getString(3);
+                arr.add(new KeywordPEKS(idx, new BigInteger(c1,16), new BigInteger(c2,16)));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
+        return arr;
     }
 
-    void selectZindex(int id){
+    String selectZindex(int id){
+        System.out.println("selectZindex id: "+id);
+        String result = "";
         try{
             String sql = "SELECT zString from "+mainDB+".Zindex where keywordId = "+id;
             rs = stmt.executeQuery(sql);
-            String res = rs.getString(1);
+            while (rs.next()){
+               result = rs.getString(1);
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }
+        return result;
     }
-    void selectContract(boolean[] zString){
+    Vector<Contract> selectContract(String zString){
+        Vector<Contract> arr = new Vector<Contract>();
         try{
-            String sql = "SELECT ci2,ci3 "+mainDB+".Contract where contractId=?";
+            String sql = "SELECT c2,c3 from "+mainDB+".Contract where contractId = ?";
+
             pstmt = conn.prepareStatement(sql);
-            for(int i = 0; i<zString.length; i++){
-                if (zString[i]){
+            for(int i = 0; i<zString.length(); i++){
+                if (zString.charAt(i) == '1') {
+                    System.out.println("charat(i) == 1");
                     pstmt.setInt(1, i+1);
                     rs = pstmt.executeQuery();
-                    String ci2 = rs.getString(1);
-                    String ci3 = rs.getString(2);
+                    while (rs.next()) {
+                        String c2 = rs.getString(1);
+                        String c3 = rs.getString(2);
+                        arr.add(new Contract(i + 1, new BigInteger(c2, 16), new BigInteger(c3, 16)));
+                    }
                 }
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
+        return arr;
     }
     void updateZindex(int id, String zString){
         try{

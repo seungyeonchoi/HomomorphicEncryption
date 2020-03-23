@@ -14,6 +14,10 @@ import java.util.Vector;
 
 public class HomomorphicEncryption {
 
+    /*
+    *의문사항
+    * 1) 로그인을 하지 않는데 user정보를 어떻게 관리할까? local로?
+    * */
     public static KGC kgc;
     public static Server server;
     public static Data d1;
@@ -21,14 +25,20 @@ public class HomomorphicEncryption {
     public static BigInteger rnum = new BigInteger(SHA1("최승연"), 16);
     public static BigInteger rnum1 = rnum.add(BigInteger.ONE);
     public static String message2 = "";
-
+    //qid: (1번째 최승연) fe10876d3bcaac90ba0968a4c
+    //qid: (2번째 최승연) cb066fe11fed84bc5dcb04c08
+    //qid: (3번째 최승연) 8efe655fd42e129d02264320a
+    //qid: (4번째 염상희) cb4bfb4affd69a854de71aa0c
+    //qid: (5번째 염상희) cb4bfb4affd69a854de71aa0c
     public static void main(String[] args) {
 
         kgc = new KGC();
         server = new Server(kgc.getP(),kgc.getA());
         User userA = new User(kgc.pkSet);
         userA.setAu(kgc.shareAlpha()); //kgc -> user에 alpha 공유 (임의로)
-        uploadFile(userA,"염상희");
+        userA.qid = new BigInteger("cb4bfb4affd69a854de71aa0c", 16);
+        searchKeyword(userA,"염상희");
+       // uploadFile(userA,"염상희");
 
 //        File file = new File("test1.txt");
 //        FileWriter writer = null;
@@ -108,8 +118,13 @@ public class HomomorphicEncryption {
 //        }
     }
     public static void uploadFile(User user, String keyword ){ //소유자 user, , (파일을 나타내는 키워드 -> 이름(상호명)
-        Data data = new Data(user, new BigInteger(SHA1(keyword), 16));
-        server.uploadFile(data);
+//        Data data = new Data(user, new BigInteger(SHA1(keyword), 16));
+//        server.uploadFile(data);
+    }
+
+    public static void searchKeyword(User user, String keyword){
+        Data data = new Data(user, new BigInteger(SHA1(keyword),16));
+        server.searchKeyword(data);
     }
 
     public static BigInteger hash(BigInteger exponent){ //data에도 있는데 하나로 하는 방법을 모르겠음!

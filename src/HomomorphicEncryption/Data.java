@@ -40,13 +40,13 @@ public class Data {
 
     public BigInteger makeCi(BigInteger ci, BigInteger systemAlpha){ //userALPHA 벗기고 systemalpha 입히기
         if (ci.mod(user.getAu()).equals(w.add(user.r.multiply(user.qid)))){
-            System.out.println("벗겻더니 동이ㅣㄹ해");
+            System.out.println("벗겻더니 동일해");
         }
         else{
             System.out.println("안동일해");
         }
         if (ci.mod(user.getAu()).equals(user.qid.add(user.r.multiply(user.qid)))){
-            System.out.println("벗겻더니 동이ㅣㄹ해");
+            System.out.println("벗겻더니 동일해");
         }
         else{
             System.out.println("안동일해");
