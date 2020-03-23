@@ -5,8 +5,6 @@ import java.util.Vector;
 
 public class Data {
 
-
-
     private User user;
     private BigInteger w;
     public BigInteger c1;

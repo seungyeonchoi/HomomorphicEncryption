@@ -60,7 +60,9 @@ public class Server {
         //db.insertUser(new User(),3);
 
         remakeData(data);
-        db.insertContract(data);
+        //db테스트
+//        db.insertContract(data);
+//        db.insertZindex(1, "1010101");
         Vector<Data> arrData = readDB();
         System.out.println(arrData.size());
         for (Data element: arrData) {

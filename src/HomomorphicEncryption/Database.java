@@ -21,17 +21,17 @@ public class Database {
         }
         connect();
     }
-//    void insertZindex( ){
-//        try{
-//            String sql = "INSERT INTO "+mainDB+".Contract(ci2,ci3) VALUES (?,?)";
-//            pstmt = conn.prepareStatement(sql);
-//            pstmt.setString(1, data.c2.toString(16 ));
-//            pstmt.setString(2, data.c3.toString(16 ));
-//            isSuccess(pstmt.executeUpdate());
-//        }catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    void insertZindex(int id, String zString){
+        try{
+            String sql = "INSERT INTO "+mainDB+".Zindex(contractId,zString) VALUES (?,?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            pstmt.setString(2, zString);
+            isSuccess(pstmt.executeUpdate());
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     void insertContract(Data data){
         try{
             String sql = "INSERT INTO "+mainDB+".Contract(ci2,ci3) VALUES (?,?)";
@@ -43,7 +43,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-    void insertCipherKeyword(Data data){
+    void insertKeywordPEKS(Data data){
         try{
 
             String sql = "INSERT INTO "+mainDB+".KeywordPEKS(ci1,ci2) VALUES (?,?)";
@@ -92,6 +92,9 @@ public class Database {
         }catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    void insertKeywordPEKS(){
+
     }
     void select(String sql) {
         try{
