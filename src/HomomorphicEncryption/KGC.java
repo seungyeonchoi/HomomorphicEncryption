@@ -95,7 +95,8 @@ public class KGC {
 //                pkSet.get(0).setQ(p);
 //            }
 //        }
-
+        System.out.println("x0 길이 : "+pkSet.get(0).pk.toString(16).length());
+        System.out.println("Q 길이 : "+pkSet.get(0).getQ().toString(16).length());
         System.out.println("\nKGC-selected pkSet");
         for(int i=0;i<pkSet.size();i++) {
             if (i == 0) System.out.println("x0(hexadecimal) : " + pkSet.get(i).pk.toString(16) );

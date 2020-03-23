@@ -5,6 +5,9 @@ import java.math.BigInteger;
 public class PublicKey implements Comparable<PublicKey>{
     private BigInteger p;
     private BigInteger q;
+
+
+
     public BigInteger r;
     public BigInteger pk;
     public PublicKey(BigInteger p, BigInteger q, BigInteger r){
@@ -25,6 +28,9 @@ public class PublicKey implements Comparable<PublicKey>{
             this.r = this.r.add(r.mod(p));
         }
         setPk();
+    }
+    public BigInteger getQ() {
+        return q;
     }
     public void setPk(){
         this.pk = p.multiply(q).add(r);
