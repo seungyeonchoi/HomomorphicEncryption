@@ -18,6 +18,7 @@ public class Data {
         makeC2();
         makeC3(a,pkSet.get(0));
     }
+
     public Data(User user, BigInteger w, PublicKey x0){
         this.user = user;
         this.w = w;
@@ -25,6 +26,7 @@ public class Data {
         makeC2();
         makeC3(user.getAu(), x0);
     }
+
     public Data(User user, BigInteger w){
         this.user = user;
         this.w = w;
@@ -32,6 +34,7 @@ public class Data {
         makeC2();
         makeC3(user.getAu(), user.pk.firstElement());
     }
+
     public Data(BigInteger c1, BigInteger c2, BigInteger c3){
         this.c1 = c1;
         this.c2 = c2;
@@ -84,6 +87,7 @@ public class Data {
         //return BigInteger.valueOf(2).pow(exponent.intValue());
         return exponent;
     }
+
     public User getUser() {
         return user;
     }

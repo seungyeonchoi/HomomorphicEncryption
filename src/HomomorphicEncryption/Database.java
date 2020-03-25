@@ -23,6 +23,7 @@ public class Database {
         }
         connect();
     }
+
     void insertZindex(int id, String zString){
         try{
             String sql = "INSERT INTO "+mainDB+".Zindex(keywordId,zString) VALUES (?,?)";
@@ -45,12 +46,16 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     void insertKeywordPEKS(Data data){
         try{
-            String sql = "INSERT INTO "+mainDB+".KeywordPEKS(c1,c2) VALUES (?,?)";
+            int idx = getTupleNum("KeywordPEKS") + 1;
+
+            String sql = "INSERT INTO "+mainDB+".KeywordPEKS(keywordId,c1,c2) VALUES (?,?,?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, data.c1.toString(16));
-            pstmt.setString(2, data.c2.toString(16));
+            pstmt.setInt(1, idx);
+            pstmt.setString(2, data.c1.toString(16));
+            pstmt.setString(3, data.c2.toString(16));
             isSuccess(pstmt.executeUpdate());
         }catch (SQLException e) {
             e.printStackTrace();
@@ -93,13 +98,14 @@ public class Database {
             String sql = "SELECT zString from "+mainDB+".Zindex where keywordId = "+id;
             rs = stmt.executeQuery(sql);
             while (rs.next()){
-               result = rs.getString(1);
+                result = rs.getString(1);
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
         return result;
     }
+
     Vector<Contract> selectContract(String zString){
         Vector<Contract> arr = new Vector<Contract>();
         try{
@@ -123,6 +129,7 @@ public class Database {
         }
         return arr;
     }
+
     void updateZindex(int id, String zString){
         try{
             String sql = "UPDATE "+mainDB+".Zindex set zString=? where keywordId="+id;
@@ -133,6 +140,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     void connect(){
         System.out.println("db connect");
         try {
@@ -144,6 +152,7 @@ public class Database {
             e.printStackTrace();
         }
     }
+
     void disconnect(){
         try {
             if(conn != null)
@@ -158,6 +167,7 @@ public class Database {
 
         }
     }
+
     void isSuccess(int result){
         if (result == 0) {
             System.out.println("fail to insert: ");
@@ -165,4 +175,35 @@ public class Database {
             System.out.println("success to insert: ");
         }
     }
+
+
+    void updateZString(Vector<Integer> keywordNum){
+        try{
+            String sql = "SELECT * from "+mainDB+".Zindex";
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String zString = rs.getString(2);
+                if(keywordNum.contains(id)) zString +="1";
+                else zString +="0";
+                updateZindex(id, zString);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    int getTupleNum(String table){
+        try{
+            String sql = "SELECT COUNT(*) FROM mydb."+table;
+            rs = stmt.executeQuery(sql);
+            rs.next();
+            System.out.println(rs.getInt(1));
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 }

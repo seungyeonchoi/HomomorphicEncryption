@@ -57,24 +57,6 @@ public class KGC {
          */
         pkSet.clear(); //pkSet 초기화
 
-        //알파 값 설정
-//        a = BigInteger.ONE;
-////        for(int i=0;i<lamda.intValue();i++){
-////            a = a.multiply(BigInteger.TWO);
-////        }
-////        a = a.add(new BigInteger(lamda.intValue()-1,r)).nextProbablePrime();//최대 2^19
-////
-////        //p값 설정 (kgc의 개인키) -> 소수 찾기
-////        p = BigInteger.ONE;
-////        for(int i=0;i<eta.intValue();i++){
-////            p = p.multiply(BigInteger.TWO);
-////        }
-////        p = p.add(new BigInteger(eta.intValue()-1,r)).nextProbablePrime();
-
-//        소수가 아닌 알파와 서로소인 수 찾는 식
-//        if(p.add(new BigInteger(eta.intValue()-1,r)).mod(a).equals(BigInteger.ZERO))
-//            p = p.add(new BigInteger(lamda.intValue()-1,r));//최대 2^39
-
         System.out.println("p(16) = " + p.toString(16));
         System.out.println("a(16) = " + a.toString(16));
 

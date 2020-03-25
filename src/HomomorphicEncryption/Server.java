@@ -1,6 +1,5 @@
 package HomomorphicEncryption;
 
-import java.io.*;
 import java.math.BigInteger;
 import java.util.Vector;
 
@@ -14,64 +13,10 @@ public class Server {
         this.a = a;
         this.db = new Database();
     }
-//    public Vector<Data> readDB(){
-//        Vector<Data> arrData = new Vector<Data>();
-//        try{
-//            FileReader fr = new FileReader("database.txt");
-//            BufferedReader br = new BufferedReader(fr);
-//            String line = "";
-//            while((line = br.readLine()) != null){
-//                arrData.add(new Data(new BigInteger(line,16), new BigInteger(br.readLine(),16), new BigInteger(br.readLine(),16)));
-//            }
-//            fr.close();
-//            br.close();
-//        } catch (FileNotFoundException e) {
-//            System.out.println(e);
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            System.out.println(e);
-//            e.printStackTrace();
-//        }
-//        return arrData;
-//    }
-//    public void writeDB(Data data){
-//
-//        try{
-//            FileWriter fw = new FileWriter("database.txt", true); //true : 이어쓰기
-//            BufferedWriter bw = new BufferedWriter(fw);
-//            bw.write(data.c1.toString(16));
-//            bw.newLine();
-//            bw.write(data.c2.toString(16));
-//            bw.newLine();
-//            bw.write(data.c3.toString(16));
-//            bw.newLine();
-//            bw.flush();
-//            fw.close();
-//            bw.close();
-//        } catch (FileNotFoundException e) {
-//            System.out.println(e);
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            System.out.println(e);
-//            e.printStackTrace();
-//        }
-//    }
-    public void uploadFile(Data data){
-        updateData(data);
-       // db.updateZindex(1,"바꿈내가");
-       // Vector<Data> arrData = readDB();
 
-//        for (Data element: arrData) {
-//            if(keywordTest(element.c1,element.c2,data.c1,data.c2)) { //동일한 키워드로 생성된 행이 있을 경우
-//                //내 데이터값 넣기 -> 파일입출력으로 하기엔 귀찮으니까 이건 그냥 넣었다 치고
-//                System.out.println("동일한 키워드 찾음");
-//                return;
-//            }
-//        }
-        //새롭게 추가된 키워드 일 경우
-       // writeDB(data);
-    }
-    public void searchKeyword(Data data){
+    public Vector<Integer> searchKeyword(Data data){
+        Vector<Integer> correctFile = new Vector<>();
+
         updateData(data); //system alpha 입히기
         for (KeywordPEKS keyword: db.selectKeywordPEKS()) { //이미 등록된 peks(wi) 과 비교
             if (keywordTest(data,keyword)){ //일치하는 키워드를 찾으면 zString(110101) 반환
@@ -81,18 +26,23 @@ public class Server {
                 for (Contract res:result) {
                     System.out.println(res.id+ "번째 파일 권한 검사");
                     if (keywordTest(data,res)){ //파일에 속한 권한 비교
+                        correctFile.add(res.id);
                         System.out.println(res.id+ "번째 파일이 키워드/ 권한 동일함");
                     }
                 }
-                return;
             }
         }
-        System.out.println("해당하는 키워드가 없습니다.");
+        if(correctFile.size() == 0)
+            System.out.println("해당하는 키워드가 없습니다.");
+
+        return correctFile;
     }
+
     public void updateData(Data data){ //user alpha 지우고, system alpha 입히기
        data.c1 = data.makeCi(data.c1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? data.c1.mod(p).subtract(p) : data.c1.mod(p),a);
        data.c3 = data.makeCi(data.c3.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? data.c3.mod(p).subtract(p) : data.c3.mod(p),a);
     }
+
     public Boolean keywordTest(BigInteger Ci1, BigInteger Ci2, BigInteger Cj1, BigInteger Cj2){
         //분모
         BigInteger parent = Ci1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? Ci1.mod(p).subtract(p) : Ci1.mod(p);
@@ -112,6 +62,7 @@ public class Server {
 
         return parent.subtract(child).equals(BigInteger.ZERO);
     }
+
     public Boolean keywordTest(Data d1, KeywordPEKS d2){
         //분모
         BigInteger parent = d1.c1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? d1.c1.mod(p).subtract(p) : d1.c1.mod(p);
@@ -150,7 +101,56 @@ public class Server {
 
         return parent.subtract(child).equals(BigInteger.ZERO);
     }
+
     public BigInteger hash(BigInteger exponent){
         return exponent;
     }
+
+    //계약서 업로드
+    public void updateContract(Data data){
+        //만약 updateData 함수를 바꾼다면 여기서 updateData한 다음 파일 추가
+        //단, 복사본을 생성해서 바꾼 데이터로 사용
+        /*
+         *Data copydata = data;
+         *updateData(copydata);
+         *db.insertContract(copydata);
+         */
+
+        db.insertContract(data);
+    }
+
+    //키워드 업로드 및 처음 생성하는 키워드에 대한 zindex 생성
+    public int updateKeyword(Data data){
+        //키워드만 검색 -> 효율적인 검색 필요 (지금은 n^2)
+
+        for (KeywordPEKS keyword: db.selectKeywordPEKS()) { //이미 등록된 peks(wi) 과 비교
+            if (keywordTest(data,keyword)){
+                return keyword.id;
+            }
+        }
+
+        db.insertKeywordPEKS(data);
+
+        int keywordCnt = db.getTupleNum("KeywordPEKS");
+        int contractCnt = db.getTupleNum("Contract") - 1;
+
+        String zString = "";
+        for(int i =0;i<contractCnt ; i++){
+            zString +="0";
+        }
+
+        //만약 updateData 함수를 바꾼다면 여기서 updateData한 다음 키워드 추가
+
+        //없는 키워드라면 z-index에 추가 string 0으로 채워서 마지막 파일은 1
+        db.insertZindex(keywordCnt,zString);
+
+        return keywordCnt;
+
+    }
+
+    //파일 추가시 z-index의 zString변경경
+    public void updateZString(Vector<Integer> keywordNum){
+        db.updateZString(keywordNum);
+    }
+
 }

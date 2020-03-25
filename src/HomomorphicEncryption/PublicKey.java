@@ -6,8 +6,6 @@ public class PublicKey implements Comparable<PublicKey>{
     private BigInteger p;
     private BigInteger q;
 
-
-
     public BigInteger r;
     public BigInteger pk;
     public PublicKey(BigInteger p, BigInteger q, BigInteger r){
