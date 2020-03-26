@@ -108,15 +108,11 @@ public class Server {
 
     //계약서 업로드
     public void updateContract(Data data){
-        //만약 updateData 함수를 바꾼다면 여기서 updateData한 다음 파일 추가
         //단, 복사본을 생성해서 바꾼 데이터로 사용
-        /*
-         *Data copydata = data;
-         *updateData(copydata);
-         *db.insertContract(copydata);
-         */
+         Data copydata = data;
+         updateData(copydata);
+         db.insertContract(copydata);
 
-        db.insertContract(data);
     }
 
     //키워드 업로드 및 처음 생성하는 키워드에 대한 zindex 생성
@@ -139,7 +135,7 @@ public class Server {
             zString +="0";
         }
 
-        //만약 updateData 함수를 바꾼다면 여기서 updateData한 다음 키워드 추가
+        updateData(data);
 
         //없는 키워드라면 z-index에 추가 string 0으로 채워서 마지막 파일은 1
         db.insertZindex(keywordCnt,zString);

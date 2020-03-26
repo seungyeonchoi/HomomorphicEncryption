@@ -38,7 +38,7 @@ public class HomomorphicEncryption {
         //user생성
         User userA = new User(kgc.pkSet);
         userA.setAu(kgc.shareAlpha()); //kgc -> user에 alpha 공유 (임의로)
-        userA.qid = new BigInteger("cb066fe11fed84bc5dcb04c08", 16);
+        userA.qid = new BigInteger("aaaaab4affd69a854de71aa0c", 16);
 
         //파일 업로드 (ex 1. userA의 염상희 최승연  2. userA의 염상희 박소영)
         Vector<String> str = new Vector<>();
@@ -56,7 +56,7 @@ public class HomomorphicEncryption {
         //키워드 검색 (ex userA's qid로 박소영 검색)
         User userB = new User(kgc.pkSet);
         userB.setAu(kgc.shareAlpha()); //kgc -> user에 alpha 공유 (임의로)
-        userB.qid = new BigInteger("cb066fe11fed84bc5dcb04c08", 16);
+        userB.qid = new BigInteger("aaaaab4affd69a854de71aa0c", 16);
         searchKeyword(userB,"박소영");
 
     }
@@ -78,8 +78,6 @@ public class HomomorphicEncryption {
 
         for(String i : keyword) {
             data.add(new Data(user, new BigInteger(SHA1(i),16),user.getAu(),kgc.pkSet));
-            //updateData 없앤다면, updateContract, updateKeyword 함수에 적힌 대로 변경해야 함
-            server.updateData(data.lastElement());
         }
 
         //2. 새로운 user라면 추가 -> 일단 pass -> 새로운 user인지 확인할 수 없음
