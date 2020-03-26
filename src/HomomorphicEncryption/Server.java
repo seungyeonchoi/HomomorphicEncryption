@@ -17,7 +17,7 @@ public class Server {
     public Vector<Integer> searchKeyword(Data data){
         Vector<Integer> correctFile = new Vector<>();
 
-        updateData(data); //system alpha 입히기
+        //updateData(data); //system alpha 입히기
         for (KeywordPEKS keyword: db.selectKeywordPEKS()) { //이미 등록된 peks(wi) 과 비교
             if (keywordTest(data,keyword)){ //일치하는 키워드를 찾으면 zString(110101) 반환
                 System.out.println("일치하는 파일 찾기");
@@ -66,7 +66,7 @@ public class Server {
     public Boolean keywordTest(Data d1, KeywordPEKS d2){
         //분모
         BigInteger parent = d1.c1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? d1.c1.mod(p).subtract(p) : d1.c1.mod(p);
-        parent = hash(parent.mod(a));
+        parent = hash(parent.mod(d1.getUser().getAu()));
         System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
         parent = parent.add(d2.c2);
 
@@ -85,7 +85,7 @@ public class Server {
     public Boolean keywordTest(Data d1, Contract d2){ //c3(권한 테스트 함수)
         //분모
         BigInteger parent = d1.c3.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? d1.c3.mod(p).subtract(p) : d1.c3.mod(p);
-        parent = hash(parent.mod(a));
+        parent = hash(parent.mod(d1.getUser().getAu()));
         System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
         parent = parent.add(d2.c2);
 
