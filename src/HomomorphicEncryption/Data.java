@@ -62,19 +62,19 @@ public class Data {
         System.out.println("w(hexadecimal) = " + w.toString(16) + ", r(hexadecimal) = " + user.r.toString(16) + ", qid(hexadecimal) = " + user.qid.toString(16));
         System.out.println();
         c1 = c1.mod(x0.pk).compareTo(x0.pk.divide(BigInteger.TWO))>0 ? c1.mod(x0.pk).subtract(x0.pk) : c1.mod(x0.pk);
-        System.out.println("c1(hexadecimal): "+c1.toString(16));
+       // System.out.println("c1(hexadecimal): "+c1.toString(16));
     }
     void makeC2(){
-        System.out.println("riqid : " +user.r.multiply(user.qid));
+       // System.out.println("riqid : " +user.r.multiply(user.qid));
         c2 = hash(user.r.multiply(user.qid));
-        System.out.println("c2(2^hexadecimal): 2^"+c2.toString(16));
+        //System.out.println("c2(2^hexadecimal): 2^"+c2.toString(16));
     }
     void makeC3(BigInteger a, PublicKey x0){
         //ci1계산하기 (mod범위에 맞추어서)
         x0 = HomomorphicEncryption.kgc.checkX0Condition(x0,user.getAu());
         c3 = user.qid.add(user.r.multiply(user.qid)).add(a.multiply(sumPk())); //user.qid+(user.r*user.qid)+(a*sumPk);
         c3 = c3.mod(x0.pk).compareTo(x0.pk.divide(BigInteger.TWO))>0 ? c3.mod(x0.pk).subtract(x0.pk) : c3.mod(x0.pk);
-        System.out.println("c3(hexadecimal): "+c3.toString(16));
+    //    System.out.println("c3(hexadecimal): "+c3.toString(16));
     }
     public BigInteger sumPk(){
         BigInteger sumPk = BigInteger.ZERO;

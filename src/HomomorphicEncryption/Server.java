@@ -47,18 +47,18 @@ public class Server {
         //분모
         BigInteger parent = Ci1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? Ci1.mod(p).subtract(p) : Ci1.mod(p);
         parent = hash(parent.mod(a));
-        System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
+    //    System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
         parent = parent.add(Cj2);
 
         //분자
         BigInteger child = Cj1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? Cj1.mod(p).subtract(p) : Cj1.mod(p);
         child = hash(child.mod(a));
-        System.out.println("H(Cj1 mod p mod a)(2^hexadecimal) : 2^" + child.toString(16));
+    //    System.out.println("H(Cj1 mod p mod a)(2^hexadecimal) : 2^" + child.toString(16));
         child = child.add(Ci2);
-
-        System.out.println();
-        System.out.println("H(Ci1 mod p mod a)*Cj2(2^hexadecimal) : 2^" +  parent);
-        System.out.println("H(Cj1 mod p mod a)*Ci2(2^hexadecimal) : 2^" + child);
+//
+//        System.out.println();
+//        System.out.println("H(Ci1 mod p mod a)*Cj2(2^hexadecimal) : 2^" +  parent);
+//        System.out.println("H(Cj1 mod p mod a)*Ci2(2^hexadecimal) : 2^" + child);
 
         return parent.subtract(child).equals(BigInteger.ZERO);
     }
@@ -67,18 +67,18 @@ public class Server {
         //분모
         BigInteger parent = d1.c1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? d1.c1.mod(p).subtract(p) : d1.c1.mod(p);
         parent = hash(parent.mod(d1.getUser().getAu()));
-        System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
+     //   System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
         parent = parent.add(d2.c2);
 
         //분자
         BigInteger child = d2.c1.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? d2.c1.mod(p).subtract(p) : d2.c1.mod(p);
         child = hash(child.mod(a));
-        System.out.println("H(Cj1 mod p mod a)(2^hexadecimal) : 2^" + child.toString(16));
+      //  System.out.println("H(Cj1 mod p mod a)(2^hexadecimal) : 2^" + child.toString(16));
         child = child.add(d1.c2);
 
-        System.out.println();
-        System.out.println("H(Ci1 mod p mod a)*Cj2(2^hexadecimal) : 2^" +  parent);
-        System.out.println("H(Cj1 mod p mod a)*Ci2(2^hexadecimal) : 2^" + child);
+//        System.out.println();
+//        System.out.println("H(Ci1 mod p mod a)*Cj2(2^hexadecimal) : 2^" +  parent);
+//        System.out.println("H(Cj1 mod p mod a)*Ci2(2^hexadecimal) : 2^" + child);
 
         return parent.subtract(child).equals(BigInteger.ZERO);
     }
@@ -86,18 +86,18 @@ public class Server {
         //분모
         BigInteger parent = d1.c3.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? d1.c3.mod(p).subtract(p) : d1.c3.mod(p);
         parent = hash(parent.mod(d1.getUser().getAu()));
-        System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
+       // System.out.println("H(Ci1 mod p mod a)(2^hexadecimal): 2^" + parent.toString(16));
         parent = parent.add(d2.c2);
 
         //분자
         BigInteger child = d2.c3.mod(p).compareTo(p.divide(BigInteger.TWO))>0 ? d2.c3.mod(p).subtract(p) : d2.c3.mod(p);
         child = hash(child.mod(a));
-        System.out.println("H(Cj1 mod p mod a)(2^hexadecimal) : 2^" + child.toString(16));
+     //   System.out.println("H(Cj1 mod p mod a)(2^hexadecimal) : 2^" + child.toString(16));
         child = child.add(d1.c2);
 
-        System.out.println();
-        System.out.println("H(Ci1 mod p mod a)*Cj2(2^hexadecimal) : 2^" +  parent);
-        System.out.println("H(Cj1 mod p mod a)*Ci2(2^hexadecimal) : 2^" + child);
+//        System.out.println();
+//        System.out.println("H(Ci1 mod p mod a)*Cj2(2^hexadecimal) : 2^" +  parent);
+//        System.out.println("H(Cj1 mod p mod a)*Ci2(2^hexadecimal) : 2^" + child);
 
         return parent.subtract(child).equals(BigInteger.ZERO);
     }
@@ -139,7 +139,6 @@ public class Server {
 
         //없는 키워드라면 z-index에 추가 string 0으로 채워서 마지막 파일은 1
         db.insertZindex(keywordCnt,zString);
-
         return keywordCnt;
 
     }
