@@ -35,23 +35,23 @@ public class HomomorphicEncryption {
         //시작 전 kgc 및 server 생성
         settingToStart();
 
-        //user생성
-        User userA = new User(kgc.pkSet);
-        userA.setAu(kgc.shareAlpha()); //kgc -> user에 alpha 공유 (임의로)
-        userA.qid = new BigInteger("aaaaab4affd69a854de71aa0c", 16);
-
-        //파일 업로드 (ex 1. userA의 염상희 최승연  2. userA의 염상희 박소영)
-        Vector<String> str = new Vector<>();
-
-        str.add("염상희");
-        str.add("최승연");
-        requestToUpload(userA, str);
-
-        str.clear();
-
-        str.add("염상희");
-        str.add("박소영");
-        requestToUpload(userA, str);
+//        //user생성
+//        User userA = new User(kgc.pkSet);
+//        userA.setAu(kgc.shareAlpha()); //kgc -> user에 alpha 공유 (임의로)
+//        userA.qid = new BigInteger("aaaaab4affd69a854de71aa0c", 16);
+//
+//        //파일 업로드 (ex 1. userA의 염상희 최승연  2. userA의 염상희 박소영)
+//        Vector<String> str = new Vector<>();
+//
+//        str.add("염상희");
+//        str.add("최승연");
+//        requestToUpload(userA, str);
+//
+//        str.clear();
+//
+//        str.add("염상희");
+//        str.add("박소영");
+//        requestToUpload(userA, str);
 
         //키워드 검색 (ex userA's qid로 박소영 검색)
         User userB = new User(kgc.pkSet);
@@ -71,6 +71,8 @@ public class HomomorphicEncryption {
     public static void requestToUpload(User user, Vector<String> keyword){
         //keyword -> biginteger로 변경 후 검색문 생성
         //1. 검색문 생성 (여러개의 ci3만들 필요 x) -> 일단은 c1,c2,c3 모두 생성
+
+        long start = System.currentTimeMillis();
         Vector<Data> data = new Vector<Data>();
         Vector<Integer> keywordNum = new Vector<>(); //zString을 만들기 위한 용도
 
@@ -93,17 +95,24 @@ public class HomomorphicEncryption {
 
         //5. zString 변경
         server.updateZString(keywordNum);
+        long end = System.currentTimeMillis();
+        System.out.println("request to upload: "+ (end-start)+" ms");
+        System.out.println("request to upload: "+ (end-start)/1000+" s");
         return;
     }
 
     //키워드 검색
     public static void searchKeyword(User user, String keyword){
+        long start = System.currentTimeMillis();
         Vector<Integer> correctFile = new Vector<>();
 
         Data data = new Data(user, new BigInteger(SHA1(keyword),16));
         correctFile = server.searchKeyword(data);
 
         System.out.println(correctFile);
+        long end = System.currentTimeMillis();
+        System.out.println("request to upload: "+ (end-start)+" ms");
+        System.out.println("request to upload: "+ (end-start)/1000+" s");
     }
 
     //해쉬함수

@@ -20,14 +20,14 @@ public class Server {
         //updateData(data); //system alpha 입히기
         for (KeywordPEKS keyword: db.selectKeywordPEKS()) { //이미 등록된 peks(wi) 과 비교
             if (keywordTest(data,keyword)){ //일치하는 키워드를 찾으면 zString(110101) 반환
-                System.out.println("일치하는 파일 찾기");
+               // System.out.println("일치하는 파일 찾기");
                 String zString = db.selectZindex(keyword.id);
                 Vector<Contract> result = db.selectContract(zString); //result: 반환받은 파일
                 for (Contract res:result) {
-                    System.out.println(res.id+ "번째 파일 권한 검사");
+              //      System.out.println(res.id+ "번째 파일 권한 검사");
                     if (keywordTest(data,res)){ //파일에 속한 권한 비교
                         correctFile.add(res.id);
-                        System.out.println(res.id+ "번째 파일이 키워드/ 권한 동일함");
+                       // System.out.println(res.id+ "번째 파일이 키워드/ 권한 동일함");
                     }
                 }
             }
