@@ -115,7 +115,6 @@ public class Database {
             pstmt = conn.prepareStatement(sql);
             for(int i = 0; i<zString.length(); i++){
                 if (zString.charAt(i) == '1') {
-                    System.out.println("charat(i) == 1");
                     pstmt.setInt(1, i+1);
                     rs = pstmt.executeQuery();
                     while (rs.next()) {
@@ -204,7 +203,7 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return 0;
     }
 
 }
