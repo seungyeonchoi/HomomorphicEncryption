@@ -10,7 +10,7 @@ public class Data {
     public BigInteger c1;
     public BigInteger c2;
     public BigInteger c3;
-
+    public Boolean isExist = false;
     public Data(User user, BigInteger w, BigInteger a, Vector<PublicKey> pkSet){
         this.user = user;
         this.w = w;

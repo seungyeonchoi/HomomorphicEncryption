@@ -47,20 +47,21 @@ public class Database {
         }
     }
 
-    void insertKeywordPEKS(Data data){
+    int insertKeywordPEKS(Data data){
         try{
             int idx = getTupleNum("KeywordPEKS") + 1;
-
             String sql = "INSERT INTO "+mainDB+".KeywordPEKS(keywordId,c1,c2) VALUES (?,?,?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, idx);
             pstmt.setString(2, data.c1.toString(16));
             pstmt.setString(3, data.c2.toString(16));
             isSuccess(pstmt.executeUpdate());
+            return idx;
         }catch (SQLException e) {
             e.printStackTrace();
 
         }
+        return -1; //-1 means fail
     }
 
     void insertUser(User user, int id){
